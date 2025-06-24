@@ -28,21 +28,28 @@ public class Tarefa
 
     public static Tarefa Criar(string titulo, string descricao, StatusTarefa status, DateTime dataVencimento)
     {
-        if (string.IsNullOrEmpty(titulo)) 
-            throw new ArgumentNullException(nameof(titulo)); 
+        ValidaDados(titulo, descricao, status, dataVencimento);
+        return new Tarefa(Guid.Empty, titulo, descricao, status, dataVencimento);
+    }
+    public void Atualizar(string titulo, string descricao, StatusTarefa status, DateTime dataVencimento)
+    {
+        ValidaDados(titulo, descricao, status, dataVencimento);
+        Titulo = titulo;
+        Descricao = descricao;
+        StatusTarefa = status;
+        DataVencimento = dataVencimento;
+    }
 
-        if(string.IsNullOrEmpty(descricao))
+    private static void ValidaDados(string titulo, string descricao, StatusTarefa status, DateTime dataVencimento)
+    {
+
+        if (string.IsNullOrEmpty(titulo))
+            throw new ArgumentNullException(nameof(titulo));
+
+        if (string.IsNullOrEmpty(descricao))
             throw new ArgumentNullException(nameof(descricao));
 
-        if(status != StatusTarefa.EmAndamento 
-            || status != StatusTarefa.Concluido
-            || status != StatusTarefa.Pendente) 
-            throw new ArgumentNullException(nameof(status));
-
-       if(dataVencimento == DateTime.MinValue)
-        {
+        if (dataVencimento == DateTime.MinValue)
             throw new ArgumentNullException(nameof(dataVencimento));
-        }
-        return new Tarefa(Guid.Empty, titulo, descricao, status, dataVencimento);
     }
 }

@@ -1,4 +1,5 @@
-﻿using Domain.Repository;
+﻿using Application.Services.Tarefas;
+using Domain.Repository;
 using Infrastructure.Context;
 using Infrastructure.Repository;
 using Microsoft.EntityFrameworkCore;
@@ -12,9 +13,8 @@ public static class DependencyInjectionTarefa
     {
         services.AddDbContext<TarefaContext>(options =>
             options.UseNpgsql(connectionString));
-
         services.AddScoped<ITarefaRepository, TarefaRepository>();
-
+        services.AddScoped<ITarefaService, TarefaService>();
         return services;
     }
 }
