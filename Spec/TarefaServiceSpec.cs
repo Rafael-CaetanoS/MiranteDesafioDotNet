@@ -43,16 +43,17 @@ public class TarefaServiceSpec
     {
         var status = 1;
         var tarefas = SetupTarefa();
+        var tarefasFiltradas = tarefas.Where(x => x.StatusTarefa == (StatusTarefa)status).ToList();
         _repository
-         .Setup(x => x.GetTarefasAsync())
-         .ReturnsAsync(tarefas.Where(x=> x.StatusTarefa == (StatusTarefa)status));
+            .Setup(x => x.GetTarefasByStatusAsync((StatusTarefa)status))
+            .ReturnsAsync(tarefasFiltradas);
         var result = await _service.GetTarefasByStatusAsync(status);
         Assert.NotNull(result);
-        Assert.Equal(result.Count(), tarefas.Count());
-        var primeiraTarefa = tarefas.FirstOrDefault();
+        Assert.Equal(tarefasFiltradas.Count, result.Count());
+        var primeiraTarefa = tarefasFiltradas.FirstOrDefault();
         var primeiroResultado = result.FirstOrDefault();
-        Assert.NotNull(primeiroResultado);
         Assert.NotNull(primeiraTarefa);
+        Assert.NotNull(primeiroResultado);
         Assert.Equal(primeiraTarefa.Titulo, primeiroResultado.Titulo);
         Assert.Equal(primeiraTarefa.Descricao, primeiroResultado.Descricao);
         Assert.Equal(primeiraTarefa.StatusTarefa, primeiroResultado.StatusTarefa);
@@ -62,13 +63,15 @@ public class TarefaServiceSpec
     [Fact]
     public async Task RetornaListaDeTarefasByStatusVazia()
     {
-        var tarefas = SetupTarefa();
+        var status = 99;
         _repository
-         .Setup(x => x.GetTarefasAsync())
-         .ReturnsAsync([]);
-        var result = await _service.GetTarefasByStatusAsync(1);
+            .Setup(x => x.GetTarefasByStatusAsync((StatusTarefa)status))
+            .ReturnsAsync(new List<Tarefa>());
+        var result = await _service.GetTarefasByStatusAsync(status);
+        Assert.NotNull(result);
         Assert.Empty(result);
     }
+
 
 
     private static List<Tarefa> SetupTarefa()
