@@ -1,5 +1,6 @@
 ﻿using Application.Services.Tarefas;
 using Domain.Entities;
+using Domain.Enum;
 using Microsoft.AspNetCore.Mvc;
 
 namespace TarefaApi.Controllers;
@@ -33,6 +34,20 @@ public class TarefaController : ControllerBase
     public async Task<IActionResult> GetTarefasById([FromRoute] string tarefaId)
     {
         var tarefas = await _service.GetTarefaByIdAsync(Guid.Parse(tarefaId));
+        return Ok(tarefas);
+    }
+
+    [HttpGet("bystatus/{status}")]
+    public async Task<IActionResult> GetTarefasByStatus([FromRoute] int status)
+    {
+        var tarefas = await _service.GetTarefasByStatusAsync(status);
+        return Ok(tarefas);
+    }
+
+    [HttpGet("bydatavencimento/{data}")]
+    public async Task<IActionResult> GetTarefasByDataVencimento([FromRoute] DateTime data)
+    {
+        var tarefas = await _service.GetTarefasByDataVencimentoAsync(data);
         return Ok(tarefas);
     }
 

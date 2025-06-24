@@ -45,9 +45,29 @@ public class TarefaService : ITarefaService
         var tarefas = await _repository.GetTarefasAsync();
         if (!tarefas.Any())
         {
-            return [];
+            return []; // Poderia Lançar uma exceção personalizada aqui
         }
 
+        return tarefas;
+    }
+
+    public async Task<IEnumerable<Tarefa>> GetTarefasByDataVencimentoAsync(DateTime dataVencimento)
+    {
+        var tarefas = await _repository.GetTarefasByDataVencimentoAsync(dataVencimento);
+        if (!tarefas.Any())
+        {
+            return []; // Poderia Lançar uma exceção personalizada aqui
+        }
+        return tarefas;
+    }
+
+    public async Task<IEnumerable<Tarefa>> GetTarefasByStatusAsync(int status)
+    {
+        var tarefas = await _repository.GetTarefasByStatusAsync((StatusTarefa)status);
+        if (!tarefas.Any())
+        {
+            return []; // Poderia Lançar uma exceção personalizada aqui
+        }
         return tarefas;
     }
 
