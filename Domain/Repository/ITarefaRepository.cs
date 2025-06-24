@@ -2,7 +2,7 @@
 
 namespace Domain.Repository;
 
-public interface ITarefa
+public interface ITarefaRepository
 {
     Task<Tarefa> CreateAsync(Tarefa tarefa);
     Task DeleteAsync(Tarefa tarefa);
